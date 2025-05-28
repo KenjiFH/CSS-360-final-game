@@ -5,6 +5,8 @@ from map import *
 from player import *
 from raycasting import *
 from object_renderer import *
+from weapon import *
+from sound import *
 
 class Game:
     #Start Screen
@@ -42,9 +44,16 @@ class Game:
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
 
+
+        self.weapon = Weapon(self)
+        self.sound = Sound(self)
+
     def update(self):
         self.player.update()
         self.raycasting.update()
+
+        self.weapon.update()
+
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
@@ -52,6 +61,7 @@ class Game:
     def draw(self): 
         self.screen.fill('black')
         self.object_renderer.draw()
+        self.weapon.draw()
         #self.map.draw()
        # self.player.draw()
 
@@ -60,6 +70,7 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            self.player.single_fire_event(event)
 
     def run(self):
         self.start_screen()
