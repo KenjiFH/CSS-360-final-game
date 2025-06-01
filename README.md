@@ -1,2 +1,1 @@
-s
-sdfsfdsdf
+sample text
