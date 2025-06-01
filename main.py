@@ -10,6 +10,9 @@ from weapon import Weapon
 import math
 import random
 
+
+import asyncio
+
 pg.mixer.init()
 
 class Game:
@@ -22,6 +25,7 @@ class Game:
         self.delta_time = 1
         self.state = "menu"
         self.new_game()
+        #self.game_over = False
     
     def new_game(self):
         """Initialize or reset all game objects and state."""
@@ -174,15 +178,26 @@ class Game:
         self.enemies_remaining = len(self.enemies)
         self.player.health = PLAYER_MAX_HEALTH
 
-    def intermission(self, message):
+    async def intermission(self, message):
         """Display a message between waves or on game over."""
+
+
+            
+
+
+
+        print(message) #Next Wave! for nw
         font = pg.font.SysFont('Arial', 60)
         text = font.render(message, True, (255, 255, 0))
         rect = text.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
         self.screen.fill((0, 0, 0))
         self.screen.blit(text, rect)
         pg.display.flip()
-        pg.time.delay(3000)
+        await asyncio.sleep(3)
+        #pg.time.delay(3000)
+        #self.game_over = True
+        
+       
 
     def menu_loop(self):
         """Display and handle the main menu loop."""
@@ -201,14 +216,16 @@ class Game:
                         sys.exit()
             self.clock.tick(60)
 
-    def run(self):
+    async def run(self): #async
         """Main game loop."""
         self.menu_loop()
         while True:
             self.check_events()
             self.update()
-            self.draw()
+            self.draw()    
+            await asyncio.sleep(0)        
 
 if __name__ == '__main__':
     game = Game()
     game.run()
+    asyncio.run(game.run())
