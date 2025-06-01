@@ -63,7 +63,10 @@ class ObjectRenderer:
                 else:
                     self.game.screen.blit(sprite, (screen_x, screen_y))
 
+                
                 # Draw enemy health bar above the sprite
+                # Removed since bar shows through walls
+                """
                 bar_width = proj_height
                 bar_height = 7
                 health_ratio = enemy.health / enemy.max_health
@@ -71,6 +74,7 @@ class ObjectRenderer:
                 bar_y = screen_y - bar_height - 4
                 pg.draw.rect(self.game.screen, (60, 60, 60), (bar_x, bar_y, bar_width, bar_height))
                 pg.draw.rect(self.game.screen, (0, 200, 0), (bar_x, bar_y, int(bar_width * health_ratio), bar_height))
+                """
 
     @staticmethod
     def get_texture(path, res=(TEXTURE_SIZE, TEXTURE_SIZE)):
