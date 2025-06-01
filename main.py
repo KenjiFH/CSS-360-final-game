@@ -11,7 +11,6 @@ import math
 import random
 
 
-import asyncio
 
 pg.mixer.init()
 
@@ -178,7 +177,7 @@ class Game:
         self.enemies_remaining = len(self.enemies)
         self.player.health = PLAYER_MAX_HEALTH
 
-    async def intermission(self, message):
+    def intermission(self, message):
         """Display a message between waves or on game over."""
 
 
@@ -193,8 +192,8 @@ class Game:
         self.screen.fill((0, 0, 0))
         self.screen.blit(text, rect)
         pg.display.flip()
-        await asyncio.sleep(3)
-        #pg.time.delay(3000)
+        
+        pg.time.delay(3000)
         #self.game_over = True
         
        
@@ -216,16 +215,16 @@ class Game:
                         sys.exit()
             self.clock.tick(60)
 
-    async def run(self): #async
+     def run(self): #async
         """Main game loop."""
         self.menu_loop()
         while True:
             self.check_events()
             self.update()
             self.draw()    
-            await asyncio.sleep(0)        
+                   
 
 if __name__ == '__main__':
     game = Game()
     game.run()
-    asyncio.run(game.run())
+    
