@@ -19,7 +19,7 @@ class Weapon:
         self.frame_counter = 0
         self.idle_image = self.images[-1]
         self.image = self.idle_image
-        self.damage = 10
+        self.damage = 25
         self.animation_time = animation_time
         self.animation_time_prev = pg.time.get_ticks()
         self.animation_trigger = False
