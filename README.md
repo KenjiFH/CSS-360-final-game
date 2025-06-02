@@ -22,3 +22,5 @@ Places more emphasis on wave survival aspect of the game
 - Sounds are too loud, especially on stacking gunshot sounds from groups of enemies attacking at the same time
 - Enemies appear a bit too large compared to the player + game walls
 - Enemy attack rate is a bit inconsistent when they have line of sight with you
+
+asd;lfjaslkdflksdfjklsdjflksdfkl
