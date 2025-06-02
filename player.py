@@ -76,6 +76,10 @@ class Player:
         self.movement()
         self.mouse_control()
 
+    def take_damage(self, damage):
+        self.game.player.health -= damage
+        self.game.object_renderer.player_damage()
+        
     @property
     def pos(self):
         return self.x, self.y
