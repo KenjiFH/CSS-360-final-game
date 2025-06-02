@@ -2,15 +2,14 @@ Places more emphasis on wave survival aspect of the game
 
 ## CHANGES:
  - Updated shotgun sound to remove high, piercing frequencies
- - Changed title name
+ - Edited title name
  - Changed map to be more open and arena-like
  - Increased enemies spawned per wave. It is currently double whatever wave number it is
  - Removed enemy hp bar so player can't see them behind walls
  - Increased player speed by 33%
  - Increased player shotgun damage from 10 to 25. Now kills enemies in two hits instead of 5
  - Enemies now have a hit accuracy of 50%
- - Converted player taking damage hard code into a function in player.py 
- - Added a red "blood" screen indicator function in object_renderer.py when the player takes damage
+ - Added a red "blood" screen indicator when the player takes damage
 
 ## ISSUES (ranked by severity):
 - Chance to spawn outside the map or in walls.
