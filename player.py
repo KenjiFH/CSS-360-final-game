@@ -79,6 +79,7 @@ class Player:
     def take_damage(self, damage):
         self.game.player.health -= damage
         self.game.object_renderer.player_damage()
+        self.game.sound.player_hurt.play()
         
     @property
     def pos(self):
