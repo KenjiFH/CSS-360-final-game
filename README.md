@@ -10,6 +10,8 @@ Places more emphasis on wave survival aspect of the game
  - Increased player shotgun damage from 10 to 25. Now kills enemies in two hits instead of 5
  - Enemies now have a hit accuracy of 50%
  - Added a red "blood" screen indicator when the player takes damage
+ - Added that one song from the lion meme as background music (I have no clue if this is allowed please check)
+ - Added sounds for player and enemies getting hurt
 
 ## ISSUES (ranked by severity):
 - Chance to spawn the player outside the map or in walls
