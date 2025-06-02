@@ -32,6 +32,7 @@ class Game:
         self.raycasting = RayCasting(self)
         self.weapon = Weapon(self)
         self.sound = Sound(self)
+        pg.mixer.music.play(-1)
         self.wave = 1
         self.spawn_wave()
 
