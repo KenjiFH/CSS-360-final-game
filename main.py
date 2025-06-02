@@ -7,6 +7,7 @@ from raycasting import *
 from object_renderer import *
 from enemy import Enemy
 from weapon import Weapon
+from sound import *
 import math
 import random
 
@@ -30,6 +31,8 @@ class Game:
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
         self.weapon = Weapon(self)
+        self.sound = Sound(self)
+        pg.mixer.music.play(-1)
         self.wave = 1
         self.spawn_wave()
 
@@ -124,7 +127,7 @@ class Game:
         """Draw the main menu screen."""
         self.screen.fill((0, 0, 0))
         font = pg.font.SysFont('Arial', 80)
-        title = font.render("Doom: Lions Awakening", True, (255, 255, 0))
+        title = font.render("Doom: Lion's Arena", True, (255, 255, 0))
         start_font = pg.font.SysFont('Arial', 50)
         start = start_font.render("Press ENTER to Start", True, (255, 255, 255))
         quit_ = start_font.render("Press Q to Quit", True, (255, 255, 255))
@@ -167,7 +170,7 @@ class Game:
                 if (x, y) not in self.map.world_map:
                     possible_spawns.append((x + 0.5, y + 0.5))
         random.shuffle(possible_spawns)
-        for i in range(self.wave):
+        for i in range(self.wave * 2):
             if possible_spawns:
                 x, y = possible_spawns.pop()
                 self.enemies.append(Enemy(self, x, y))

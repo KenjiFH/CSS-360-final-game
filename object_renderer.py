@@ -10,11 +10,15 @@ class ObjectRenderer:
         self.wall_textures = self.load_wall_texures()
         self.sky_image = self.get_texture('resources/textures/sky.png', (WIDTH, HALF_HEIGHT))
         self.sky_offset = 0
+        self.blood_screen = self.get_texture('resources/textures/blood_screen.png', (WIDTH, HEIGHT))
 
     def draw(self):
         self.draw_background()
         self.render_game_objects()
         self.draw_enemies()
+
+    def player_damage(self):
+        self.screen.blit(self.blood_screen, (0,0))
     
     def draw_background(self):
         self.sky_offset = (self.sky_offset + 4.5 * self.game.player.rel) % WIDTH
@@ -63,7 +67,10 @@ class ObjectRenderer:
                 else:
                     self.game.screen.blit(sprite, (screen_x, screen_y))
 
+                
                 # Draw enemy health bar above the sprite
+                # Removed since bar shows through walls
+                """
                 bar_width = proj_height
                 bar_height = 7
                 health_ratio = enemy.health / enemy.max_health
@@ -71,6 +78,7 @@ class ObjectRenderer:
                 bar_y = screen_y - bar_height - 4
                 pg.draw.rect(self.game.screen, (60, 60, 60), (bar_x, bar_y, bar_width, bar_height))
                 pg.draw.rect(self.game.screen, (0, 200, 0), (bar_x, bar_y, int(bar_width * health_ratio), bar_height))
+                """
 
     @staticmethod
     def get_texture(path, res=(TEXTURE_SIZE, TEXTURE_SIZE)):
