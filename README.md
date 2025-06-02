@@ -1,4 +1,4 @@
-Places emphasis on wave survival aspect of the game
+Places more emphasis on wave survival aspect of the game
 
 ## CHANGES:
  - Updated shotgun sound to remove high, piercing frequencies
@@ -6,7 +6,7 @@ Places emphasis on wave survival aspect of the game
  - Changed map to be more open and arena-like
  - Increased enemies spawned per wave. It is currently double whatever wave number it is
  - Removed enemy hp bar so player can't see them behind walls
- - Increased player speed by 33% for faster-paced gameplay
+ - Increased player speed by 33%
  - Increased player shotgun damage from 10 to 25. Now kills enemies in two hits instead of 5
  - Enemies now have a hit accuracy of 50%
  - Converted player taking damage hard code into a function in player.py 
