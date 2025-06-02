@@ -12,7 +12,7 @@ class Enemy:
         self.y = y
         self.max_health = 50
         self.health = 50
-        self.speed = 0.0005
+        self.speed = 0.002
         self.walk_frames = []
         walk_folder = 'resources/textures/enemy_walk'
         for fname in sorted(os.listdir(walk_folder)):
