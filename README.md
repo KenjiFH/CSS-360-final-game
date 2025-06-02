@@ -12,8 +12,8 @@ Places more emphasis on wave survival aspect of the game
  - Added a red "blood" screen indicator when the player takes damage
 
 ## ISSUES (ranked by severity):
-- Chance to spawn outside the map or in walls.
-- Enemies spawn way too close to the player, instead of around the map. (This and the previous issue are probably due to some enemy spawning function not being too compatible with the map)
+- Chance to spawn the player outside the map or in walls
+- Enemies spawn way too close to the player and only in the front of the camera, instead of spread around the map
 - You can see being unrendered too early at the left and right edges of the game screen
 - Sounds are too loud, especially on stacking gunshot sounds from groups of enemies attacking at the same time
 - Enemy attack rate is a bit inconsistent when they have line of sight with you
