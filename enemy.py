@@ -136,6 +136,7 @@ class Enemy:
 
     def take_damage(self, amount):
         """Reduce enemy health by the given amount."""
+        self.game.sound.enemy_hurt.play()
         self.health -= amount
         if self.health < 0:
             self.health = 0
