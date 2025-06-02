@@ -1,6 +1,7 @@
 import pygame as pg
 from collections import deque
 from settings import *
+from sound import *
 
 class Weapon:
     """Handles weapon state, animation, and sound."""
@@ -23,7 +24,7 @@ class Weapon:
         self.animation_time = animation_time
         self.animation_time_prev = pg.time.get_ticks()
         self.animation_trigger = False
-        self.shot_sound = pg.mixer.Sound('resources/sound/shotgun.wav')  # Adjust path if needed
+        ## self.shot_sound = pg.mixer.Sound('resources/sound/shotgun.wav')  # MOVED TO sound.py
 
     def check_animation_time(self):
         """Check if it's time to advance the weapon animation."""
@@ -52,5 +53,5 @@ class Weapon:
         """Update weapon animation and play sound if firing."""
         self.check_animation_time()
         if self.reloading and self.frame_counter == 0 and self.animation_trigger:
-            self.shot_sound.play()
+            self.game.sound.shotgun.play()
         self.animate_shot()
