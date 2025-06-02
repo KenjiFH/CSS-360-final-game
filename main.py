@@ -7,6 +7,7 @@ from raycasting import *
 from object_renderer import *
 from enemy import Enemy
 from weapon import Weapon
+from sound import *
 import math
 import random
 
@@ -30,6 +31,7 @@ class Game:
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
         self.weapon = Weapon(self)
+        self.sound = Sound(self)
         self.wave = 1
         self.spawn_wave()
 
