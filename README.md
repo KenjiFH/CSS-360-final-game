@@ -17,4 +17,5 @@ Places more emphasis on wave survival aspect of the game
 - You can see being unrendered too early at the left and right edges of the game screen
 - There seems to be a fake(?) wall being rendered at a fixed distance in front of the player. This blocks the player's vision from seeing any far away enemies and actual walls at the far end of the map
 - Sounds are too loud, especially on stacking gunshot sounds from groups of enemies attacking at the same time
+- Enemies appear a bit too large compared to the player + game walls
 - Enemy attack rate is a bit inconsistent when they have line of sight with you
