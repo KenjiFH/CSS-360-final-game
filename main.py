@@ -7,10 +7,9 @@ from raycasting import *
 from object_renderer import *
 from enemy import Enemy
 from weapon import Weapon
+from sound import *
 import math
 import random
-
-
 
 pg.mixer.init()
 
@@ -24,7 +23,6 @@ class Game:
         self.delta_time = 1
         self.state = "menu"
         self.new_game()
-        #self.game_over = False
     
     def new_game(self):
         """Initialize or reset all game objects and state."""
@@ -33,6 +31,8 @@ class Game:
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
         self.weapon = Weapon(self)
+        self.sound = Sound(self)
+        pg.mixer.music.play(-1)
         self.wave = 1
         self.spawn_wave()
 
@@ -127,7 +127,7 @@ class Game:
         """Draw the main menu screen."""
         self.screen.fill((0, 0, 0))
         font = pg.font.SysFont('Arial', 80)
-        title = font.render("Doom: Lions Awakening", True, (255, 255, 0))
+        title = font.render("Doom: Lion's Arena", True, (255, 255, 0))
         start_font = pg.font.SysFont('Arial', 50)
         start = start_font.render("Press ENTER to Start", True, (255, 255, 255))
         quit_ = start_font.render("Press Q to Quit", True, (255, 255, 255))
@@ -170,7 +170,7 @@ class Game:
                 if (x, y) not in self.map.world_map:
                     possible_spawns.append((x + 0.5, y + 0.5))
         random.shuffle(possible_spawns)
-        for i in range(self.wave):
+        for i in range(self.wave * 2):
             if possible_spawns:
                 x, y = possible_spawns.pop()
                 self.enemies.append(Enemy(self, x, y))
@@ -179,24 +179,13 @@ class Game:
 
     def intermission(self, message):
         """Display a message between waves or on game over."""
-
-
-            
-
-
-
-        print(message) #Next Wave! for nw
         font = pg.font.SysFont('Arial', 60)
         text = font.render(message, True, (255, 255, 0))
         rect = text.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
         self.screen.fill((0, 0, 0))
         self.screen.blit(text, rect)
         pg.display.flip()
-        
         pg.time.delay(3000)
-        #self.game_over = True
-        
-       
 
     def menu_loop(self):
         """Display and handle the main menu loop."""
@@ -215,16 +204,14 @@ class Game:
                         sys.exit()
             self.clock.tick(60)
 
-     def run(self): #async
+    def run(self):
         """Main game loop."""
         self.menu_loop()
         while True:
             self.check_events()
             self.update()
-            self.draw()    
-                   
+            self.draw()
 
 if __name__ == '__main__':
     game = Game()
     game.run()
-    

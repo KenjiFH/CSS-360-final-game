@@ -12,7 +12,7 @@ class Enemy:
         self.y = y
         self.max_health = 50
         self.health = 50
-        self.speed = 0.0005
+        self.speed = 0.002
         self.walk_frames = []
         walk_folder = 'resources/textures/enemy_walk'
         for fname in sorted(os.listdir(walk_folder)):
@@ -23,6 +23,7 @@ class Enemy:
         self.animation_time = 120
         self.last_anim_time = pg.time.get_ticks()
         self.path = []
+        self.gun_accuracy = 0.5 # ideal % of shots that will hit the player for damage
         self.shoot_cooldown = 1000
         self.last_shot_time = 0
         self.damage = 5
@@ -123,16 +124,19 @@ class Enemy:
             player_angle = math.atan2(self.game.player.y - self.y, self.game.player.x - self.x)
             angle_diff = abs((enemy_facing_angle - player_angle + math.pi) % (2 * math.pi) - math.pi)
             if angle_diff < 0.2 and distance < 10 and self.has_line_of_sight():
-                self.game.player.health -= self.damage
-                if self.game.player.health < 0:
-                    self.game.player.health = 0
                 self.shot_sound.play()
                 self.muzzle_flash_active = True
                 self.muzzle_flash_timer = now
+                
+                if random.random() < self.gun_accuracy: # Enemy should have a successful hit on 50% of their shots
+                    self.game.player.take_damage(self.damage)
+                if self.game.player.health < 0:
+                    self.game.player.health = 0
             self.last_shot_time = now
 
     def take_damage(self, amount):
         """Reduce enemy health by the given amount."""
+        self.game.sound.enemy_hurt.play()
         self.health -= amount
         if self.health < 0:
             self.health = 0
