@@ -1,4 +1,4 @@
-Places more emphasis on wave survival aspect of the game
+# THERE ARE SEPARATE RELEASES FOR WINDOWS AND MAC. NAVIGATE TO THE ONE YOU NEED
 
 ## CHANGES:
  - Updated shotgun sound to remove high, piercing frequencies
