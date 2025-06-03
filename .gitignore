@@ -1,2 +1,7 @@
 # Ignore cache
 __pycache__/
+
+## Ignore pyinstaller stuff (idk what to call it)
+build/
+dist/
+main.spec
