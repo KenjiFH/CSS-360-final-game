@@ -124,16 +124,35 @@ class Game:
             self.draw_menu()
 
     def draw_menu(self):
-        """Draw the main menu screen."""
+        """Draw the main menu screen or pause menu."""
         self.screen.fill((0, 0, 0))
         font = pg.font.SysFont('Arial', 80)
         title = font.render("Doom: Lion's Arena", True, (255, 255, 0))
-        start_font = pg.font.SysFont('Arial', 50)
-        start = start_font.render("Press ENTER to Start", True, (255, 255, 255))
-        quit_ = start_font.render("Press Q to Quit", True, (255, 255, 255))
-        self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 200))
-        self.screen.blit(start, (self.screen.get_width() // 2 - start.get_width() // 2, 400))
-        self.screen.blit(quit_, (self.screen.get_width() // 2 - quit_.get_width() // 2, 500))
+        # title at the top
+        self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 60))
+        # Info for top left
+        info_font = pg.font.SysFont('Arial', 40)
+        wave_text = info_font.render(f"Wave: {getattr(self, 'wave', 1)}", True, (255, 255, 255))
+        enemies_text = info_font.render(f"Enemies: {getattr(self, 'enemies_remaining', 0)}", True, (255, 255, 255))
+        self.screen.blit(wave_text, (20, 20))
+        self.screen.blit(enemies_text, (20, 60))
+        # Instructions for top right
+        instr_font = pg.font.SysFont('Arial', 32)
+        instr_r = instr_font.render("Press R to Restart Current Wave", True, (200, 200, 0))
+        instr_enter = instr_font.render("Press ENTER to Resume", True, (200, 200, 0))
+        instr_q = instr_font.render("Press Q to Quit", True, (200, 200, 0))
+        instr_esc = instr_font.render("Press ESC anytime to pause", True, (200, 200, 0))
+        screen_w = self.screen.get_width()
+        self.screen.blit(instr_r, (screen_w - instr_r.get_width() - 20, 20))
+        self.screen.blit(instr_enter, (screen_w - instr_enter.get_width() - 20, 60))
+        self.screen.blit(instr_q, (screen_w - instr_q.get_width() - 20, 100))
+        self.screen.blit(instr_esc, (screen_w - instr_esc.get_width() - 20, 140))
+        # Game instructions 
+        desc_font = pg.font.SysFont('Arial', 32)
+        desc1 = desc_font.render("The goal is to eliminate enemies and advance waves.", True, (180, 180, 180))
+        desc2 = desc_font.render("The waves will get harder each time. Good luck!", True, (180, 180, 180))
+        self.screen.blit(desc1, (self.screen.get_width() // 2 - desc1.get_width() // 2, 200))
+        self.screen.blit(desc2, (self.screen.get_width() // 2 - desc2.get_width() // 2, 240))
         pg.display.flip()
 
     def check_events(self):
@@ -144,11 +163,7 @@ class Game:
                 sys.exit()
             if event.type == pg.KEYDOWN:
                 if self.state == "menu":
-                    if event.key == pg.K_RETURN:
-                        self.state = "game"
-                    elif event.key == pg.K_q:
-                        pg.quit()
-                        sys.exit()
+                    pass  
                 elif self.state == "game":
                     if event.key == pg.K_ESCAPE:
                         self.menu_loop()
@@ -164,16 +179,15 @@ class Game:
         self.enemies = []
         map_rows = self.map.rows
         map_cols = self.map.cols
-        possible_spawns = []
-        for y in range(map_rows // 2, map_rows - 2):
-            for x in range(map_cols // 2, map_cols - 2):
-                if (x, y) not in self.map.world_map:
-                    possible_spawns.append((x + 0.5, y + 0.5))
+        # Get all reachable tiles from player start
+        player_tile = (int(self.player.x), int(self.player.y))
+        reachable = self.get_reachable_tiles(*player_tile)
+        possible_spawns = [(x + 0.5, y + 0.5) for (x, y) in reachable if (x, y) != player_tile]
         random.shuffle(possible_spawns)
-        for i in range(self.wave * 2):
-            if possible_spawns:
-                x, y = possible_spawns.pop()
-                self.enemies.append(Enemy(self, x, y))
+        num_to_spawn = min(self.wave * 2, len(possible_spawns))
+        for i in range(num_to_spawn):
+            x, y = possible_spawns.pop()
+            self.enemies.append(Enemy(self, x, y))
         self.enemies_remaining = len(self.enemies)
         self.player.health = PLAYER_MAX_HEALTH
 
@@ -186,9 +200,23 @@ class Game:
         self.screen.blit(text, rect)
         pg.display.flip()
         pg.time.delay(3000)
+        # Make user not move during intermission/potential fix for the weird map glitch
+        pg.event.clear()  
+
+    def reset_player(self):
+        """Reset player position and health to the starting location."""
+        if hasattr(self.player, 'start_x') and hasattr(self.player, 'start_y'):
+            self.player.x = self.player.start_x
+            self.player.y = self.player.start_y
+        else:
+            # Default to center or a known good spawn
+            self.player.x = 1.5
+            self.player.y = 1.5
+        self.player.angle = 0
+        self.player.health = PLAYER_MAX_HEALTH
 
     def menu_loop(self):
-        """Display and handle the main menu loop."""
+        """Display and handle the main menu loop or pause menu."""
         self.menu_active = True
         while self.menu_active:
             self.draw_menu()
@@ -199,6 +227,12 @@ class Game:
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_RETURN:
                         self.menu_active = False
+                        self.state = "game"
+                    if event.key == pg.K_r:
+                        self.reset_player()      # Reset player position/health
+                        self.spawn_wave()        # Respawn enemies for current wave
+                        self.menu_active = False
+                        self.state = "game"
                     if event.key == pg.K_q:
                         pg.quit()
                         sys.exit()
@@ -207,10 +241,33 @@ class Game:
     def run(self):
         """Main game loop."""
         self.menu_loop()
+        pg.event.clear()
         while True:
             self.check_events()
             self.update()
             self.draw()
+
+    def get_reachable_tiles(self, start_x, start_y):
+        """Return a set of all empty tiles reachable from (start_x, start_y)."""
+        from collections import deque
+        visited = set()
+        queue = deque()
+        sx, sy = int(start_x), int(start_y)
+        queue.append((sx, sy))
+        visited.add((sx, sy))
+        map_rows = self.map.rows
+        map_cols = self.map.cols
+
+        while queue:
+            x, y = queue.popleft()
+            for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+                nx, ny = x+dx, y+dy
+                if (0 <= nx < map_cols and 0 <= ny < map_rows and
+                    (nx, ny) not in self.map.world_map and
+                    (nx, ny) not in visited):
+                    visited.add((nx, ny))
+                    queue.append((nx, ny))
+        return visited
 
 if __name__ == '__main__':
     game = Game()

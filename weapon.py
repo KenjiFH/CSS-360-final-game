@@ -9,7 +9,7 @@ class Weapon:
         self.game = game
         self.images = deque()
         # Load all images in the weapon folder
-        for i in range(1, 7):  # Assuming 5 frames: 1.png, 2.png, ...
+        for i in range(1, 7):  
             img = pg.image.load(f'{path}/{i}.png').convert_alpha()
             w, h = img.get_width(), img.get_height()
             img = pg.transform.smoothscale(img, (int(w * scale), int(h * scale)))
